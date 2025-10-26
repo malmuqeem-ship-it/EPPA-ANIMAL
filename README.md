@@ -1,111 +1,149 @@
 <!doctype html>
 <html lang="ar">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>لعبة أسئلة</title>
-  <style>
-    body{font-family:Tahoma,Arial;direction:rtl;padding:20px;background:#f7f7f7}
-    .card{background:#fff;padding:20px;border-radius:8px;max-width:700px;margin:20px auto;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
-    h1{text-align:center}
-    .options button{display:block;width:100%;margin:8px 0;padding:12px;border-radius:6px;border:1px solid #ddd;background:#fafafa;cursor:pointer}
-    .options button.correct{background:#d4edda;border-color:#c3e6cb}
-    .options button.wrong{background:#f8d7da;border-color:#f5c6cb}
-    .meta{display:flex;justify-content:space-between;margin-top:10px;color:#555}
-    #next{margin-top:12px}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>صدق أم إشاعة عن الحيوانات</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Tahoma", sans-serif;
+    direction: rtl;
+    background: linear-gradient(to bottom, #f4f1ea, #d9e7d2);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .container {
+    background: rgba(255,255,255,0.95);
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    max-width: 700px;
+    width: 90%;
+    padding: 30px;
+    text-align: center;
+  }
+  h1 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+  }
+  .intro {
+    font-size: 18px;
+    margin-bottom: 25px;
+  }
+  button {
+    font-size: 18px;
+    padding: 12px 25px;
+    margin: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  #startBtn {
+    background-color: #2e7d32;
+    color: white;
+  }
+  #questionBox {
+    display: none;
+  }
+  #questionBox img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .choiceBtn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 10px auto;
+    background-color: #4caf50;
+    color: #fff;
+  }
+  .choiceBtn.false {
+    background-color: #f44336;
+  }
+  .choiceBtn:hover {
+    opacity: 0.9;
+  }
+  #result, #explanation, #end {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+  #nextBtn {
+    background-color: #2e7d32;
+    color: white;
+    display: none;
+  }
+</style>
 </head>
 <body>
-  <div class="card">
-    <h1>لعبة أسئلة وأجوبة</h1>
-    <div id="game">
-      <div id="questionArea">
-        <p id="questionText">...جاري التحميل</p>
-        <div class="options" id="options"></div>
-      </div>
-      <div class="meta">
-        <div>السؤال <span id="qIndex">0</span>/<span id="qTotal">0</span></div>
-        <div>النقاط: <span id="score">0</span></div>
-      </div>
-      <button id="next" style="display:none">التالي</button>
+<div class="container">
+  <div id="intro">
+    <h1>صدق أم إشاعة عن الحيوانات</h1>
+    <div class="intro">
+      مرحبًا بك في لعبة صدق أم إشاعة عن الحيوانات! 🌿<br>
+      اختبر معلوماتك واستمتع باكتشاف حقائق ممتعة عن عالم الصحراء.
     </div>
-    <div id="result" style="display:none;text-align:center">
-      <h2>انتهت اللعبة!</h2>
-      <p>النقاط الكلية: <span id="finalScore"></span></p>
-      <button id="restart">إعادة اللعب</button>
-    </div>
+    <button id="startBtn">ابدأ اللعبة ▶️</button>
   </div>
 
-  <script>
-    // قاعدة أسئلة بسيطة (يمكن تحميلها من ملف JSON خارجي)
-    const questions = [
-      { q: "ما عاصمة الإمارات؟", choices: ["دبي","أبو ظبي","الشارقة","عجمان"], a:1 },
-      { q: "أكبر قارة من حيث المساحة؟", choices: ["أفريقيا","آسيا","أوروبا","أمريكا"], a:1 },
-      { q: "هل الشمس نجم؟", choices: ["نعم","لا"], a:0 }
-    ];
+  <div id="questionBox">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Oryx_damma.jpg" alt="المها العربي">
+    <div id="questionText">
+      المها العربي لا يحتاج إلى الماء إطلاقًا ليعيش في الصحراء.
+    </div>
+    <button class="choiceBtn trueBtn">صدق ✅</button>
+    <button class="choiceBtn falseBtn false">إشاعة ❌</button>
+    <div id="result"></div>
+    <div id="explanation"></div>
+    <button id="nextBtn" onclick="restart()">التالي ▶️</button>
+  </div>
 
-    let index = 0, score = 0;
-    const qTotal = questions.length;
-    document.getElementById('qTotal').textContent = qTotal;
+  <div id="end" style="display:none;">
+    <h2>أحسنت! 🌟</h2>
+    <p>شكرًا لمشاركتك في لعبة صدق أم إشاعة عن الحيوانات.</p>
+    <button onclick="restart()">إعادة اللعب 🔁</button>
+  </div>
+</div>
 
-    function showQuestion() {
-      const q = questions[index];
-      document.getElementById('questionText').textContent = q.q;
-      const opts = document.getElementById('options');
-      opts.innerHTML = '';
-      q.choices.forEach((ch,i)=>{
-        const btn = document.createElement('button');
-        btn.textContent = ch;
-        btn.onclick = () => selectAnswer(i, btn);
-        opts.appendChild(btn);
-      });
-      document.getElementById('qIndex').textContent = index+1;
-      document.getElementById('next').style.display = 'none';
-    }
+<script>
+const startBtn = document.getElementById("startBtn");
+const intro = document.getElementById("intro");
+const questionBox = document.getElementById("questionBox");
+const result = document.getElementById("result");
+const explanation = document.getElementById("explanation");
+const nextBtn = document.getElementById("nextBtn");
+const end = document.getElementById("end");
 
-    function selectAnswer(i, btn) {
-      const correct = questions[index].a;
-      // منع النقر المتكرر
-      Array.from(document.getElementById('options').children).forEach(b=>b.disabled=true);
-      if (i === correct) {
-        btn.classList.add('correct');
-        score += 10; // نقاط لكل إجابة صحيحة
-        document.getElementById('score').textContent = score;
-      } else {
-        btn.classList.add('wrong');
-        // إبراز الإجابة الصحيحة
-        const buttons = document.getElementById('options').children;
-        buttons[correct].classList.add('correct');
-      }
-      // إظهار زر التالي أو النتيجة
-      if (index < qTotal - 1) {
-        document.getElementById('next').style.display = 'inline-block';
-      } else {
-        setTimeout(showResult, 800);
-      }
-    }
+startBtn.onclick = () => {
+  intro.style.display = "none";
+  questionBox.style.display = "block";
+}
 
-    document.getElementById('next').addEventListener('click', ()=>{
-      index++;
-      showQuestion();
-    });
+document.querySelector(".trueBtn").onclick = () => checkAnswer(true);
+document.querySelector(".falseBtn").onclick = () => checkAnswer(false);
 
-    function showResult(){
-      document.getElementById('game').style.display='none';
-      document.getElementById('finalScore').textContent = score;
-      document.getElementById('result').style.display='block';
-    }
+function checkAnswer(choice) {
+  if(choice === false){
+    result.textContent = "إجابة صحيحة ✅";
+    explanation.textContent = "❌ إشاعة — صحيح أن المها العربي يستطيع البقاء لفترات طويلة دون شرب الماء بفضل تكيفه مع بيئة الصحراء القاسية، لكنه يشرب عندما يتوفر الماء ويستمد جزءًا من احتياجاته من النباتات التي يتغذى عليها. هذه القدرة المميزة تساعده على النجاة في أكثر المناطق جفافًا في الجزيرة العربية.";
+  } else {
+    result.textContent = "إجابة خاطئة ❌";
+    explanation.textContent = "❌ إشاعة — صحيح أن المها العربي يستطيع البقاء لفترات طويلة دون شرب الماء بفضل تكيفه مع بيئة الصحراء القاسية، لكنه يشرب عندما يتوفر الماء ويستمد جزءًا من احتياجاته من النباتات التي يتغذى عليها. هذه القدرة المميزة تساعده على النجاة في أكثر المناطق جفافًا في الجزيرة العربية.";
+  }
+  nextBtn.style.display = "inline-block";
+}
 
-    document.getElementById('restart').addEventListener('click', ()=>{
-      index = 0; score = 0;
-      document.getElementById('score').textContent = score;
-      document.getElementById('game').style.display='block';
-      document.getElementById('result').style.display='none';
-      showQuestion();
-    });
-
-    // بدء اللعب
-    showQuestion();
-  </script>
+function restart() {
+  result.textContent = "";
+  explanation.textContent = "";
+  nextBtn.style.display = "none";
+  end.style.display = "none";
+  questionBox.style.display = "block";
+}
+</script>
 </body>
 </html>
