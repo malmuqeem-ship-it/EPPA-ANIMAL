@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>صدق أم إشاعة عن الحيوانات</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Tahoma", sans-serif;
+    direction: rtl;
+    background: linear-gradient(to bottom, #f4f1ea, #d9e7d2);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .container {
+    background: rgba(255,255,255,0.95);
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    max-width: 700px;
+    width: 90%;
+    padding: 30px;
+    text-align: center;
+  }
+  h1 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+  }
+  .intro {
+    font-size: 18px;
+    margin-bottom: 25px;
+  }
+  button {
+    font-size: 18px;
+    padding: 12px 25px;
+    margin: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  #startBtn {
+    background-color: #2e7d32;
+    color: white;
+  }
+  #questionBox {
+    display: none;
+  }
+  #questionBox img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .choiceBtn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 10px auto;
+    background-color: #a5d6a7;
+    color: #fff;
+  }
+  .choiceBtn.false {
+    background-color: #ef9a9a;
+  }
+  .choiceBtn:hover {
+    opacity: 0.9;
+  }
+  #result, #explanation, #end {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+  #nextBtn {
+    background-color: #2e7d32;
+    color: white;
+    display: none;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div id="intro">
+    <
